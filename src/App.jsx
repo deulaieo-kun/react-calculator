@@ -1,10 +1,10 @@
+import React, { useState } from "react";
 import "./App.css";
-import { useState } from "react";
 
 function App() {
   const [firstNumber, setFirstNumber] = useState(0);
-  const [secondNumber, setSecondNumber] = useState(null);
   const [operation, setOperation] = useState(null);
+  const [secondNumber, setSecondNumber] = useState(null);
 
   const getNumber = (number) => {
     if (secondNumber === 0) {
@@ -18,6 +18,38 @@ function App() {
     }
   };
 
+  const getOperation = (sign) => {
+    if (sign !== "=") {
+      setOperation(sign);
+      setSecondNumber(0);
+    } else {
+      switch (operation) {
+        case "+":
+          setFirstNumber(parseFloat(firstNumber) + parseFloat(secondNumber));
+          setOperation(null);
+          setSecondNumber(null);
+          break;
+        case "-":
+          setFirstNumber(parseFloat(firstNumber) - parseFloat(secondNumber));
+          setOperation(null);
+          setSecondNumber(null);
+          break;
+        case "×":
+          setFirstNumber(parseFloat(firstNumber) * parseFloat(secondNumber));
+          setOperation(null);
+          setSecondNumber(null);
+          break;
+        case "÷":
+          setFirstNumber(parseFloat(firstNumber) / parseFloat(secondNumber));
+          setOperation(null);
+          setSecondNumber(null);
+          break;
+        default:
+          return;
+      }
+    }
+  };
+
   const getDisplay = () => {
     if (secondNumber) {
       return `${firstNumber}${operation}${secondNumber}`;
@@ -25,13 +57,6 @@ function App() {
       return `${firstNumber}${operation}`;
     } else {
       return firstNumber;
-    }
-  };
-
-  const getOperation = (sign) => {
-    if (sign !== "=") {
-      setOperation(sign);
-      setSecondNumber(0);
     }
   };
 
@@ -231,7 +256,9 @@ function App() {
             <div className="col-3">
               <div
                 className="p-3 text-bg-secondary rounded-circle"
-                onclick="inputNumber('.')"
+                onClick={() => {
+                  getNumber(".");
+                }}
               >
                 <h3>.</h3>
               </div>
@@ -239,7 +266,9 @@ function App() {
             <div className="col-3">
               <div
                 className="p-3 text-bg-warning rounded-circle"
-                onclick="outputAnswer()"
+                onClick={() => {
+                  getOperation("=");
+                }}
               >
                 <h3>=</h3>
               </div>
